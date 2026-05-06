@@ -1,7 +1,7 @@
 # CapyToons.to - Comic Reading Platform
 
 ## 📖 Project Overview
-**CapyToons.to** is a web-based comic reading platform developed for the **Database Systems Lab**[cite: 1]. It serves as a centralized, reliable repository for manga, manhwa, manhua, and webtoons, aggregating content from diverse origins into a single interface. 
+**CapyToons.to** is a web-based comic reading platform. It serves as a centralized, reliable repository for manga, manhwa, manhua, and webtoons, aggregating content from diverse origins into a single interface. 
 
 The system addresses common issues in the comic-reading community, such as platform outages and poor metadata consistency, by providing a robust database-driven alternative.
 
