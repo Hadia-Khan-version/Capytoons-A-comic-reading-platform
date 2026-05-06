@@ -1,0 +1,22 @@
+# Protects your database passwords and API keys
+.env
+
+# Excludes compiled Python files and cache folders
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Excludes local database logs or temporary files
+*.log
+*.sql.gz
+
+# Excludes temporary Word files (if you have Project-Milestone1.docx open)
+~$*.docx
+
+.DS_Store
+Thumbs.db
