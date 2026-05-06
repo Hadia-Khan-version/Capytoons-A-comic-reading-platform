@@ -1,11 +1,11 @@
 # CapyToons.to - Comic Reading Platform
 
-## 📖 Project Overview
+## Project Overview
 **CapyToons.to** is a web-based comic reading platform. It serves as a centralized, reliable repository for manga, manhwa, manhua, and webtoons, aggregating content from diverse origins into a single interface. 
 
 The system addresses common issues in the comic-reading community, such as platform outages and poor metadata consistency, by providing a robust database-driven alternative.
 
-## 🚀 Key Features
+## Key Features
 * **Advanced Search & Filter**: Discover titles by genre, type (manga/webtoon), status, language, year, and author.
 * **Personalized Experience**: Registered users receive recommendations based on reading history, ratings, and bookmarks.
 * **Reading History**: Automatically tracks the last-read chapter per comic for each user.
@@ -13,13 +13,13 @@ The system addresses common issues in the comic-reading community, such as platf
 * **Admin Management**: Dedicated panel for managing comics and chapters.
 * **Reporting**: Generates trending and popularity reports based on view counts.
 
-## 🛠 Technology Stack
+## Technology Stack
 * **Frontend**: React.js, Tailwind CSS
 * **Backend**: Node.js, Express.js
 * **Database**: MySQL
 * **Scripts**: Python (utilizing MangaDex API for data seeding)
 
-## 📊 Database Design
+## Database Design
 The core of CapyToons is a relational database designed to ensure data integrity and fast retrieval.
 
 ### Entity-Relationship Diagram (ERD)
@@ -32,7 +32,7 @@ The database structure utilizes Crow-Foot notations to represent relationships b
 > * **[Comic_Reading_Platform.pdf](Comic_Reading_Platform.pdf)**
 > * **[Project-Milestone1.docx](Project-Milestone1.docx)**
 
-## 📂 Project Structure & Milestone 1
+## Project Structure & Milestone 1
 The current repository includes:
 * **`Project-Milestone1.docx`**: Contains the full ERD and schema details.
 * **`workflow.flowchart`**: Visual representation of the system logic.
@@ -40,7 +40,7 @@ The current repository includes:
 * **Python Scripts**: Used to populate the database with ~50 comics and ~100 chapters via the MangaDex API.
 * **Backend Routes**: Initial implementation of the API structure.
 
-## 👥 Project Members
+## Project Members
 * **Hadia Khan**
 * **Hamna Rehman**
 * **Program**: BSSE-B (2024-28), IM Sciences
