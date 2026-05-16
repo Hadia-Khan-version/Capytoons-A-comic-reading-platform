@@ -30,11 +30,11 @@ The database structure utilizes Crow-Foot notations to represent relationships b
 
 > **Note:** For the full technical breakdown, refer to the following project files:
 > * **[Comic_Reading_Platform.pdf](Comic_Reading_Platform.pdf)**
-> * **[Project-Milestone1.docx](Project-Milestone1.docx)**
+> * **[versionControl.docx](versionControl.docx)**
 
-## Project Structure & Milestone 1
+## Project Structure
 The current repository includes:
-* **`Project-Milestone1.docx`**: Contains the full ERD and schema details.
+* **`versionControl.docx`**: Contains the full ERD and schema details.
 * **`workflow.flowchart`**: Visual representation of the system logic.
 ![System Workflow](./images/Workflow.drawio.png)
 * **Python Scripts**: Used to populate the database with ~50 comics and ~100 chapters via the MangaDex API.
