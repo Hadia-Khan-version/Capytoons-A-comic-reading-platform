@@ -1,0 +1,128 @@
+-- Create Database
+CREATE DATABASE IF NOT EXISTS Capytoons;
+USE Capytoons;
+
+-- 1. Author Table
+CREATE TABLE Author (
+    AuthorID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Nationality VARCHAR(100)
+);
+
+-- 2. User Table
+CREATE TABLE User (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    JoinDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    AvatarURL VARCHAR(255)
+);
+
+-- 3. Genre Table
+CREATE TABLE Genre (
+    GenreID INT AUTO_INCREMENT PRIMARY KEY,
+    GenreName VARCHAR(100) NOT NULL
+);
+
+-- 4. Comic Table
+CREATE TABLE Comic (
+    ComicID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    CoverImageURL VARCHAR(255),
+    Description TEXT,
+    ReleaseYear YEAR,
+    Status VARCHAR(50),
+    Type VARCHAR(50),
+    Language VARCHAR(50),
+    AuthorID INT,
+    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID) ON DELETE SET NULL
+);
+
+-- 5. Chapter Table
+CREATE TABLE Chapter (
+    ChapterID INT AUTO_INCREMENT PRIMARY KEY,
+    ComicID INT NOT NULL,
+    ChapterNumber INT NOT NULL,
+    Title VARCHAR(255),
+    UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PageCount INT,
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE
+);
+
+-- 6. Page Table
+CREATE TABLE Page (
+    PageID INT AUTO_INCREMENT PRIMARY KEY,
+    ChapterID INT NOT NULL,
+    PageNumber INT NOT NULL,
+    ImageURL VARCHAR(255) NOT NULL,
+    FOREIGN KEY (ChapterID) REFERENCES Chapter(ChapterID) ON DELETE CASCADE
+);
+
+-- 7. Review Table
+CREATE TABLE Review (
+    ReviewID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    ComicID INT NOT NULL,
+    Rating DECIMAL(2,1),
+    ReviewText TEXT,
+    ReviewDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE
+);
+
+-- 8. Bookmark Table (Composite Primary Key)
+CREATE TABLE Bookmark (
+    UserID INT NOT NULL,
+    ComicID INT NOT NULL,
+    ListType VARCHAR(50),
+    PRIMARY KEY (UserID, ComicID),
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE
+);
+
+-- 9. ComicView Table
+CREATE TABLE ComicView (
+    ComicID INT PRIMARY KEY,
+    TotalViews BIGINT DEFAULT 0,
+    WeeklyViews BIGINT DEFAULT 0,
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE
+);
+
+-- 10. ComicGenre Table (Many-to-Many Junction)
+CREATE TABLE ComicGenre (
+    ComicID INT NOT NULL,
+    GenreID INT NOT NULL,
+    PRIMARY KEY (ComicID, GenreID),
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE,
+    FOREIGN KEY (GenreID) REFERENCES Genre(GenreID) ON DELETE CASCADE
+);
+
+CREATE TABLE ReadingHistory (
+    UserID INT NOT NULL,
+    ComicID INT NOT NULL,
+    LastChapterID INT,
+    LastReadAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (UserID, ComicID),
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE,
+    FOREIGN KEY (LastChapterID) REFERENCES Chapter(ChapterID) ON DELETE SET NULL
+);
+CREATE TABLE ComicGenre (
+    ComicID INT NOT NULL,
+    GenreID INT NOT NULL,
+    PRIMARY KEY (ComicID, GenreID),
+    FOREIGN KEY (ComicID) REFERENCES Comic(ComicID) ON DELETE CASCADE,
+    FOREIGN KEY (GenreID) REFERENCES Genre(GenreID) ON DELETE CASCADE
+);
+
+CREATE TABLE Comment (
+    CommentID INT AUTO_INCREMENT PRIMARY KEY,
+    CommentText VARCHAR(1000), 
+    UserID INT NOT NULL,       
+    ChapterID INT NOT NULL,      
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (ChapterID) REFERENCES Chapter(ChapterID) ON DELETE CASCADE
+);

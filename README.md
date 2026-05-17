@@ -37,8 +37,11 @@ The current repository includes:
 * **`normalization.md`**: CapyToons schema is normalized to 3NF with two justified denormalizations for performance.
 * **[normalization.md](./docs/normalization.md)**
 
-* **`data.md`**: Capytoons uses an ETL pipeline to process manga and user data into a normalized MySQL database.
-* **[data.md](./docs/data.md)**
+* **`dataflow.md`**: Capytoons uses an ETL pipeline to process manga and user data into a normalized MySQL database.
+* **[dataflow.md](./docs/dataflow.md)**
+
+* **`schema.sql`**: The Entire DDL commands for the Schema of Capytoons can be found at schema.sql.
+* **[schema.sql](./schema/schema.sql)**
 
 * **`workflow.flowchart`**: Visual representation of the system logic.
 ![System Workflow](./images/Flowchart.png)
