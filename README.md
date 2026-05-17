@@ -34,14 +34,27 @@ The database structure utilizes Crow-Foot notations to represent relationships b
 
 ## Project Structure
 The current repository includes:
+
 * **`normalization.md`**: CapyToons schema is normalized to 3NF with two justified denormalizations for performance.
 * **[normalization.md](./docs/normalization.md)**
+
+* **`Population Scripts`**: The database was populated using Python-based ETL scripts that fetched real-world comic data from the MangaDex API and generated synthetic user interaction data for reviews and ratings. The cleaned and transformed data was directly inserted into the MySQL database using structured insertion logic with duplicate prevention and relational mapping. As a result, all core tables were successfully populated, including high-volume tables such as Comic, Chapter, Page, User, and Review, ensuring a complete and consistent dataset for further validation and testing.
+
+* The Scripts used were;
+* **[populatepopulate_capytoons.py](./scripts/populate_capytoons.py)**
+* **[populate_reviews.py](./scripts/populate_reviews.py)**
 
 * **`dataflow.md`**: Capytoons uses an ETL pipeline to process manga and user data into a normalized MySQL database.
 * **[dataflow.md](./docs/dataflow.md)**
 
 * **`schema.sql`**: The Entire DDL commands for the Schema of Capytoons can be found at schema.sql.
 * **[schema.sql](./schema/schema.sql)**
+
+* **`DML Validatons`**: DML testing was performed to verify that the database correctly supports data manipulation and maintains integrity after modifications. This included executing controlled UPDATE and DELETE operations with specific WHERE conditions to ensure selective changes without affecting the entire dataset. After data loading and modifications, four JOIN-based integrity tests were performed to validate foreign key relationships across key tables. In addition, row count checks using COUNT(*) were executed on all tables to confirm successful data insertion, and NULL value checks were performed on key columns to ensure data completeness. These combined tests confirmed that the database is consistent, fully populated, and maintains proper relational integrity across all entities.
+* For the Tests script, see;
+* **[DML-tests.sql](./scripts/DML-tests.sql)**
+* For the Verification Screenshots, see;
+* **[DML-validtion Screenshots](./scripts/DML-validtion Screenshots)**
 
 * **`workflow.flowchart`**: Visual representation of the system logic.
 ![System Workflow](./images/Flowchart.png)
