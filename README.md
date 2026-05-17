@@ -29,13 +29,17 @@ The database structure utilizes Crow-Foot notations to represent relationships b
 * **Pink Tables**: Comic-related data (Authors, Genres, Chapters, Pages).
 
 > **Note:** For the full technical breakdown, refer to the following project files:
-> * **[Comic_Reading_Platform.pdf](Comic_Reading_Platform.pdf)**
+> * **[Comic_Reading_Platform.pdf](./docs/Comic_Reading_Platform.pdf)**
 
 
 ## Project Structure
 The current repository includes:
 * **`normalization.md`**: CapyToons schema is normalized to 3NF with two justified denormalizations for performance.
 * **[normalization.md](./docs/normalization.md)**
+
+* **`data.md`**: Capytoons uses an ETL pipeline to process manga and user data into a normalized MySQL database.
+* **[data.md](./docs/data.md)**
+
 * **`workflow.flowchart`**: Visual representation of the system logic.
 ![System Workflow](./images/Flowchart.png)
 * **Python Scripts**: Used to populate the database with ~50 comics and ~100 chapters via the MangaDex API.
