@@ -24,17 +24,18 @@ The core of CapyToons is a relational database designed to ensure data integrity
 
 ### Entity-Relationship Diagram (ERD)
 The database structure utilizes Crow-Foot notations to represent relationships between entities.
-![Entity Relationship Diagram](./images/CapytoonsERD.png)
+![Entity Relationship Diagram](./images/CapytoonsERD.drawio.png)
 * **Green Tables**: User-related data (History, Bookmarks, Reviews).
 * **Pink Tables**: Comic-related data (Authors, Genres, Chapters, Pages).
 
 > **Note:** For the full technical breakdown, refer to the following project files:
 > * **[Comic_Reading_Platform.pdf](Comic_Reading_Platform.pdf)**
-> * **[versionControl.docx](versionControl.docx)**
+
 
 ## Project Structure
 The current repository includes:
-* **`versionControl.docx`**: Contains the full ERD and schema details.
+* **`normalization.md`**: CapyToons schema is normalized to 3NF with two justified denormalizations for performance.
+* **[normalization.md](./docs/normalization.md)**
 * **`workflow.flowchart`**: Visual representation of the system logic.
 ![System Workflow](./images/Flowchart.png)
 * **Python Scripts**: Used to populate the database with ~50 comics and ~100 chapters via the MangaDex API.
