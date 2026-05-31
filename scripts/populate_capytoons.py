@@ -1,14 +1,16 @@
 import os
+import time
+import requests
 from dotenv import load_dotenv
 import mysql.connector
 
 load_dotenv("dotenv") 
 
-db_host = os.getenv("DB_HOST", "localhost")
-db_port = os.getenv("DB_PORT", "3306")
-db_user = os.getenv("DB_USER")
-db_password = os.getenv("DB_PASSWORD")
-db_name = os.getenv("DB_NAME", "Capytoons") 
+db_host     = "localhost"
+db_port     = 3306
+db_user     = "root"
+db_password = "12345678"
+db_name     = "Capytoons"
 
 # ─────────────────────────────────────────────
 #  DATABASE CONFIG 
@@ -24,7 +26,7 @@ DB_CONFIG = {
 
 BASE_URL   = "https://api.mangadex.org"
 LANGUAGE   = "en"
-TOTAL_COMICS = 50
+TOTAL_COMICS = 100
 
 # ─────────────────────────────────────────────
 #  HELPERS
@@ -134,16 +136,37 @@ def main():
 
     # ── 1. Fetch 50 manga from MangaDex ──────────────────────────────────────
     print(f"📡 Fetching {TOTAL_COMICS} comics from MangaDex...")
-    params = {
-        "limit":               TOTAL_COMICS,
-        "offset":              0,
-        "contentRating[]":     ["safe", "suggestive"],
-        "includes[]":          ["author", "cover_art"],
-        "order[followedCount]":"desc",        # popular first
-        "availableTranslatedLanguage[]": LANGUAGE
+    print(f"📡 Fetching {TOTAL_COMICS} manga from MangaDex...")
+    manga_params = {
+        "limit":                          TOTAL_COMICS,
+        "offset":                         0,
+        "contentRating[]":                ["safe", "suggestive"],
+        "includes[]":                     ["author", "cover_art"],
+        "order[followedCount]":           "desc",
+        "availableTranslatedLanguage[]":  LANGUAGE,
+        "originalLanguage[]":             "ja",       # Japanese only
     }
-    data   = get("/manga", params)
-    mangas = data.get("data", [])
+    manga_data  = get("/manga", manga_params)
+    mangas      = manga_data.get("data", [])
+    print(f"   Got {len(mangas)} manga.\n")
+
+    print(f"📡 Fetching {TOTAL_COMICS} manhwa from MangaDex...")
+    manhwa_params = {
+        "limit":                          TOTAL_COMICS,
+        "offset":                         0,
+        "contentRating[]":                ["safe", "suggestive"],
+        "includes[]":                     ["author", "cover_art"],
+        "order[followedCount]":           "desc",
+        "availableTranslatedLanguage[]":  LANGUAGE,
+        "originalLanguage[]":             "ko",       # Korean only
+    }
+    manhwa_data = get("/manga", manhwa_params)
+    manhwas     = manhwa_data.get("data", [])
+    print(f"   Got {len(manhwas)} manhwa.\n")
+
+    # Combine both lists
+    mangas = mangas + manhwas
+    print(f"📚 Total comics to insert: {len(mangas)}\n")
     print(f"   Got {len(mangas)} comics.\n")
 
     for idx, manga in enumerate(mangas, 1):
@@ -240,37 +263,10 @@ def main():
                 ch_date = ch_date[:19].replace("T", " ")   # MySQL DATETIME format
 
             cursor.execute("""
-                INSERT INTO Chapter (ComicID, ChapterNumber, Title, UploadDate, PageCount)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (comic_id, ch_number, ch_title, ch_date, ch_pages))
-            chapter_id = cursor.lastrowid
+                INSERT INTO Chapter (ComicID, ChapterNumber, Title, UploadDate, PageCount, MangaDexChapterID)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """, (comic_id, ch_number, ch_title, ch_date, ch_pages, chapter_uid))
             conn.commit()
-
-            # ── 3. Fetch page image URLs ──────────────────────────────────────
-            if ch_pages == 0:
-                continue
-            try:
-                time.sleep(1.5)
-                server_data = get(f"/at-home/server/{chapter_uid}")
-            except Exception as e:
-                print(f"         ⚠️  Page fetch failed: {e}")
-                continue
-
-            base_url_img = server_data.get("baseUrl")
-            chapter_hash = server_data["chapter"]["hash"]
-            page_files   = server_data["chapter"].get("data", [])
-
-            page_rows = []
-            for page_num, filename in enumerate(page_files, 1):
-                image_url = f"{base_url_img}/data/{chapter_hash}/{filename}"
-                page_rows.append((chapter_id, page_num, image_url))
-
-            if page_rows:
-                cursor.executemany(
-                    "INSERT INTO Page (ChapterID, PageNumber, ImageURL) VALUES (%s, %s, %s)",
-                    page_rows
-                )
-                conn.commit()
 
         print(f"      ✅ Chapters + pages inserted for: {title}\n")
 
